@@ -28,6 +28,22 @@ class User extends REST_Controller
 	  $response = $this->Data_operations->addupvote($id);
 	  $this->response($response, 200);
 	}
+   function resolveC_get()
+   {
+       $id=$this->get('id'); 
+	  $this->load->model('Data_operations');
+	 
+	  $response = $this->Data_operations->resolveComp($id);
+	  $this->response($response, 200);
+   }
+   function unresolveC_get()
+   {
+       $id=$this->get('id'); 
+	  $this->load->model('Data_operations');
+	 
+	  $response = $this->Data_operations->unresolveComp($id);
+	  $this->response($response, 200);
+   }
   function addcomment_get()
   {
 	$comment[0]=$this->get('id');
@@ -64,13 +80,5 @@ class User extends REST_Controller
     $this->response($response, 200);
   }
 
-  function resolve_get(){
-    $complaint_id = $this->get('key');
-
-    $this->load->model('Data_operations');
-    $response = $this->Data_operations->resolve($complaint_id);
-    json_encode($response);
-    $this->response($response, 200);
-  }
 
 }

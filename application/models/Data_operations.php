@@ -7,6 +7,48 @@ class Data_operations extends CI_Model {
      parent::__construct() ;
    }
 
+   function unresolveComp($id)
+   {
+     $this->load->database();
+     $this->db->distinct();
+	 //obtaining date
+	 $this->load->helper('date');
+	 $datestring = "%Y-%m-%d %h:%i:%s";
+     $time = time();
+     $t= mdate($datestring, $time);
+   
+     //updating resolve	 
+     $this->db->set('resolved', 'resolved-1', FALSE);
+	 $this->db->where('id', $id);
+	 $this->db->update('complaints');
+	 
+   	return true ;
+   }
+   function resolveComp($id)
+   {
+     $this->load->database();
+     $this->db->distinct();
+	 //obtaining date
+	 $this->load->helper('date');
+	 $datestring = "%Y-%m-%d %h:%i:%s";
+     $time = time();
+     $t= mdate($datestring, $time);
+   
+     //updating resolve	 
+     $this->db->set('resolved', 'resolved+1', FALSE);
+	 $this->db->where('id', $id);
+	 $this->db->update('complaints');
+	 
+	 //adding notifications
+	 $indi_notif=$this->getnotifbyid($id);
+	 $notif=array(
+	 'description'=> $indi_notif['title'][0].' is resolved',
+	 'datetime_created'=> $t
+	 );
+	 $this->db->insert('notifications',$notif); 
+   	return true ;
+	 
+   }
    function addupvote($id)
    {
      $this->load->database();
@@ -226,16 +268,6 @@ class Data_operations extends CI_Model {
      return $query->result();
    }
 
-   function resolve($complaint_id){
-     $this->load->database();
-     $data = array('resolved'=>'1');
-     $this->db->where('id=',$complaint_id);
-     $query = $this->db->update('complaints',$data);
-
-
-     $this->db->where('id=',$complaint_id);
-     $complaintquery = $this->db->get('complaints');
-     return $complaintquery->result()[0];
-   }
+   
 
 }
