@@ -23,6 +23,16 @@ class General extends REST_Controller
     json_encode($response);
     $this->response($response, 200);
   }
+  function addcomment_get()
+  {
+	$comment[0]=$this->get('id');
+	$comment[1]=$this->get('content');
+	$comment[2]=$this->get('postedby');
+	$comment[3]=$this->get('datetime');
+    
+	$this->load->model('Data_operations');
+   
+  }
 
   function login_post()
   {
