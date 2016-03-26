@@ -69,6 +69,20 @@ class User extends REST_Controller
       $this->response($response, 200);
   }
 
+  function editinfo_get()
+  { 
+    $info[0] = $this->get('kerberos_username');
+	$info[1] = $this->get('hostel');
+	$info[2] = $this->get('email');
+    $info[3] = $this->get('phone');
+	$info[4] = $this->get('password');
+	 
+	 $this->load->model('Data_operations');
+     $response = $this->Data_operations->editprofile($info);
+	 json_encode($response);
+     $this->response($response, 200);
+  }
+  
   function usercomplaints_get(){
     $complaintsdata[0] = $this->get('username');
     $complaintsdata[1] = $this->get('startindex');

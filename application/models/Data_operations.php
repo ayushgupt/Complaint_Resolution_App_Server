@@ -166,6 +166,23 @@ class Data_operations extends CI_Model {
 		
 		return $result ;
    }
+   function editprofile($info)
+   {
+      $this->load->database();
+	    //decode all elements of array
+      foreach ( $info as &$val ){
+  			$val = rawurldecode($val) ;
+  		}
+     $data = array('hostel'=>$info[1],
+	 'email' =>$info[2],
+	 'phone' => $info[3],
+	 'password' => $info[4]
+	 );
+	 
+     $this->db->where('kerberos_username=',$info[0]);
+     $query = $this->db->update('users',$data);
+     return true;
+   }
    function register($profile){
      $this->load->database();
      $this->db->distinct();
