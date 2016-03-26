@@ -23,4 +23,13 @@ class admin extends REST_Controller
 	  $response = $this->Data_operations->unresolveComp($id);
 	  $this->response($response, 200);
    }
+   function admincomplaint_get()
+   {
+      $type=$this->get('admin');   
+      
+      $this->load->model('Data_operations');
+      $response = $this->Data_operations->getadmincomplaints($type);
+      json_encode($response);
+      $this->response($response, 200);	  
+   }
 }

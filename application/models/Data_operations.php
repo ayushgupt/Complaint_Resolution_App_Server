@@ -284,7 +284,15 @@ class Data_operations extends CI_Model {
      $query = $this->db->get('complaints',$limit,$offset);
      return $query->result();
    }
-
+   
+   function getadmincomplaints($type){
+     $this->load->database();
+	 
+     $this->db->where('admin=',$type);
+     $query = $this->db->get('complaints');
+     
+	 return $query->result();
+   } 
    
 
 }
