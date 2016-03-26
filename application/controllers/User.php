@@ -22,7 +22,11 @@ class User extends REST_Controller
 	
    function upvote_get()
 	{
-	   
+	  $id=$this->get('id'); 
+	  $this->load->model('Data_operations');
+	 
+	  $response = $this->Data_operations->addupvote($id);
+	  $this->response($response, 200);
 	}
   function addcomment_get()
   {

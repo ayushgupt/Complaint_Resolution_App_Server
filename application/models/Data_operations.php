@@ -7,6 +7,30 @@ class Data_operations extends CI_Model {
      parent::__construct() ;
    }
 
+   function addupvote($id)
+   {
+     $this->load->database();
+     $this->db->distinct();
+	 //obtaining date
+	 $this->load->helper('date');
+	 $datestring = "%Y-%m-%d %h:%i:%s";
+     $time = time();
+     $t= mdate($datestring, $time);
+	 
+     //updating upvote	 
+     $this->db->set('upvotes_num', 'upvotes_num+1', FALSE);
+	 $this->db->where('id', $id);
+	 $this->db->update('complaints');
+	 
+	 //adding notifications
+	 $indi_notif=$this->getnotifbyid($id);
+	 $notif=array(
+	 'description'=> 'Upvote on '.$indi_notif['title'][0],
+	 'datetime_created'=> $t
+	 );
+	 $this->db->insert('notifications',$notif); 
+   	return true ;
+   }
    function complaint_to_db($newcomplaint)
    {
       $this->load->database();
@@ -16,7 +40,8 @@ class Data_operations extends CI_Model {
       foreach ( $newcomplaint as &$val ){
   			$val = rawurldecode($val) ;
   		}
-     $this->load->helper('date');
+     //obtaining date
+	 $this->load->helper('date');
 	 $datestring = "%Y-%m-%d %h:%i:%s";
      $time = time();
      $t= mdate($datestring, $time);
@@ -59,26 +84,27 @@ class Data_operations extends CI_Model {
     $time = time();
 
     $t= mdate($datestring, $time);
-	
+	//insert values into comments table of database
      $data = array(
       'id'=>$comment[0],
       'contents'=>$comment[1],
       'postedby'=>$comment[2],
 	  'datetime'=>$t
 	);
-
+    $this->db->insert('comments', $data);
+	//insert into notification table
 	$indi_notif=$this->getnotifbyid($comment[0]);
-	
 	$notif = array(
       'description'=>$comment[2].' commented on '.$indi_notif['title'][0],
 	  'datetime_created'=>$t
 	);
-	//insert into notification table
-	 $this->db->insert('notifications', $notif);
-    //insert values into users table of database
-    $this->db->insert('comments', $data);
+	$this->db->insert('notifications', $notif);
+    
     return "true" ;
-   
+    //incrementing comment number 
+	$this->db->set('comments_num', 'comments_num+1', FALSE);
+	 $this->db->where('id', comment[0]);
+	 $this->db->update('complaints');
    }
    
    public function getnotifbyid($id)
