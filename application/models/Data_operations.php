@@ -7,6 +7,44 @@ class Data_operations extends CI_Model {
      parent::__construct() ;
    }
 
+   function complaint_to_db($newcomplaint)
+   {
+      $this->load->database();
+      $this->db->distinct();
+
+      //decode all elements of array
+      foreach ( $newcomplaint as &$val ){
+  			$val = rawurldecode($val) ;
+  		}
+     $this->load->helper('date');
+	 $datestring = "%Y-%m-%d %h:%i:%s";
+     $time = time();
+     $t= mdate($datestring, $time);
+     
+     $data=array(
+	 'title'=>$newcomplaint[0],
+	 'description'=>$newcomplaint[1],
+	 'type'=>$newcomplaint[2],
+	  'postedby'=>$newcomplaint[3],
+	  'admin'=>$newcomplaint[4],
+	  'datetime_created'=>$t,
+	  'datetime_last'=>$t, 
+	  'upvotes_num'=>0,
+	  'comments_num'=>0 ,
+	  'resolved'=>0 
+	 );
+	 
+	 //inserting new complaint into table
+	 $this->db->insert('complaints', $data);
+	 
+	 $notif=array(
+	 'description'=> $newcomplaint[3].' posted a new complaint',
+	 'datetime_created'=> $t
+	 );
+	 //inserting new notification
+	 $this->db->insert('notifications',$notif); 
+	 return true; 
+   }
    function commentdb($comment)
    {
      $this->load->database();
