@@ -181,7 +181,7 @@ class Data_operations extends CI_Model {
 	 
      $this->db->where('kerberos_username=',$info[0]);
      $query = $this->db->update('users',$data);
-     return true;
+     return $query;
    }
    function register($profile){
      $this->load->database();
