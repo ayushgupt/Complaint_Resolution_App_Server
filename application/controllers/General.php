@@ -7,7 +7,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 class General extends REST_Controller
 {
 
-  function register_post()
+  function register_get()
   {
     $profile[0] = $this->get('username');
     $profile[1] = $this->get('password');
@@ -23,43 +23,47 @@ class General extends REST_Controller
     json_encode($response);
     $this->response($response, 200);
   }
-  function addcomment_get()
-  {
-	$comment[0]=$this->get('id');
-	$comment[1]=$this->get('content');
-	$comment[2]=$this->get('postedby');
-	$comment[3]=$this->get('datetime');
-    
-	$this->load->model('Data_operations');
-   
-  }
 
-  function login_post()
+  function login_get()
   {
     // For debugging purposes
-    $this->output->enable_profiler(TRUE);
+    //$this->output->enable_profiler(TRUE);
 
     $username = $this->get('username');
     $password = $this->get('password');
 
+	 
     $this->load->model('Data_operations');
     $data = $this->Data_operations->login($username,$password);
-    $response = array('user'=>$data,'success'=>'true');
-    // store userdata in session variable
-    $this->session->set_userdata($response);
+    
+     $response= $data; 
+	$this->session->set_userdata($data);
     json_encode($response);
     $this->response($response, 200);
   }
 
   function logout_get(){
-    $userarray = array('user','success');
-    $this->session->unset_userdata($userarray);
+    
+	$this->session->sess_destroy();
+        $response=array('success'=>'true') ; 
+		json_encode($response);
+		$this->response($response, 201);
   }
 
   function notifications_get(){
     $startindex = $this->get('startindex');
     $endindex = $this->get('endindex');
 
+	 if($this->session->userdata('kerberos_username')!=null)
+	{ 
+	   
+	}
+    else
+	{ 
+	    $response=array('success'=>'false') ; 
+		json_encode($response);
+		$this->response($response, 201);
+	}	
     $limit = $endindex - $startindex +1;
     $offset = $startindex;
 

@@ -9,6 +9,16 @@ class User extends REST_Controller
 	
   function addcomplaint_get()
 	{
+	    if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
 	   $complaint[0]=$this->get('title');
 	   $complaint[1]=$this->get('description');
 	   $complaint[2]=$this->get('type');
@@ -22,30 +32,36 @@ class User extends REST_Controller
 	
    function upvote_get()
 	{
+	   if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
 	  $id=$this->get('id'); 
 	  $this->load->model('Data_operations');
 	 
 	  $response = $this->Data_operations->addupvote($id);
 	  $this->response($response, 200);
 	}
-   function resolveC_get()
-   {
-       $id=$this->get('id'); 
-	  $this->load->model('Data_operations');
-	 
-	  $response = $this->Data_operations->resolveComp($id);
-	  $this->response($response, 200);
-   }
-   function unresolveC_get()
-   {
-       $id=$this->get('id'); 
-	  $this->load->model('Data_operations');
-	 
-	  $response = $this->Data_operations->unresolveComp($id);
-	  $this->response($response, 200);
-   }
+   
   function addcomment_get()
   {
+    
+	 if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
 	$comment[0]=$this->get('id');
 	$comment[1]=$this->get('contents');
 	$comment[2]=$this->get('postedby');
@@ -58,7 +74,18 @@ class User extends REST_Controller
   }
   
   function listcomplaints_get(){
-      $complaintsdata[0] = $this->get('username');
+     
+			if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
+   	 $complaintsdata[0] = $this->get('username');
       $complaintsdata[1] = $this->get('type');
       $complaintsdata[2] = $this->get('startindex');
       $complaintsdata[3] = $this->get('endindex');
@@ -71,6 +98,17 @@ class User extends REST_Controller
 
   function editinfo_get()
   { 
+      if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
+			
     $info[0] = $this->get('kerberos_username');
 	$info[1] = $this->get('hostel');
 	$info[2] = $this->get('email');
@@ -84,6 +122,17 @@ class User extends REST_Controller
   }
   
   function usercomplaints_get(){
+    
+     if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}	
     $complaintsdata[0] = $this->get('username');
     $complaintsdata[1] = $this->get('startindex');
     $complaintsdata[2] = $this->get('endindex');

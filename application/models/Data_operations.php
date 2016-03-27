@@ -194,11 +194,11 @@ class Data_operations extends CI_Model {
 
     $data = array(
       'name'=>$profile[0],
-      'kerberos_username'=>$profile[1],
-      'hostel'=>$profile[2],
-	  'email'=>$profile[3],
-	  'phone'=>$profile[4],
-	  'password'=>$profile[5]
+      'kerberos_username'=>$profile[2],
+      'hostel'=>$profile[5],
+	  'email'=>$profile[4],
+	  'phone'=>$profile[3],
+	  'password'=>$profile[1]
 	);
 
     //insert values into users table of database
@@ -209,7 +209,7 @@ class Data_operations extends CI_Model {
     $this->db->where('password=',$profile[1]);
     $query = $this->db->get();
 	
-	return $query->result()[0];
+	return $query->result();
    }
 
    function login($username,$password){
@@ -224,7 +224,31 @@ class Data_operations extends CI_Model {
      $this->db->where('name=',$username);
      $this->db->where('password=',$password);
      $query = $this->db->get();
-     return $query->result()[0];
+	 $i= 0 ;
+	 foreach($query->result() as  $row) 
+         {  $data = array(
+			  'name'=>$row->name,
+			  'kerberos_username'=>$row->kerberos_username,
+			  'hostel'=>$row->hostel,
+			  'email'=>$row->email,
+			  'phone'=>$row->phone,
+			  'password'=>$row->password,
+			  'success'=>'true'
+			);
+			$i=$i+1 ;
+		 }
+	
+		if($i==1)	
+		return $data ;
+		else
+		{
+		  $data = array(
+			   'success'=>'false'
+			);
+			return $data ;
+		}
+	 
+     
    }
 
    function getnotifs($limit,$offset){

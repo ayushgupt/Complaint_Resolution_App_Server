@@ -9,15 +9,36 @@ class admin extends REST_Controller
 	
    function resolveC_get()
    {
-       $id=$this->get('id'); 
-	  $this->load->model('Data_operations');
-	 
-	  $response = $this->Data_operations->resolveComp($id);
-	  $this->response($response, 200);
+       if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
+		   $id=$this->get('id'); 
+		  $this->load->model('Data_operations');
+		 
+		  $response = $this->Data_operations->resolveComp($id);
+		  $this->response($response, 200);
    }
    function unresolveC_get()
-   {
-       $id=$this->get('id'); 
+   {    
+		   if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}
+
+      $id=$this->get('id'); 
 	  $this->load->model('Data_operations');
 	 
 	  $response = $this->Data_operations->unresolveComp($id);
@@ -25,6 +46,17 @@ class admin extends REST_Controller
    }
    function admincomplaint_get()
    {
+      
+	   if($this->session->userdata('kerberos_username')!=null)
+		{ 
+		   
+		}
+		else
+		{ 
+			$response=array('success'=>'false') ; 
+			json_encode($response);
+			$this->response($response, 201);
+		}
       $type=$this->get('admin');   
       
       $this->load->model('Data_operations');
