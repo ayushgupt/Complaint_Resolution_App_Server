@@ -24,7 +24,7 @@ class General extends REST_Controller
     $this->response($response, 200);
   }
 
-  function login_get()
+  function login_POST()
   {
     // For debugging purposes
     //$this->output->enable_profiler(TRUE);

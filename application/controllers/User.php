@@ -117,8 +117,16 @@ class User extends REST_Controller
 	 
 	 $this->load->model('Data_operations');
      $response = $this->Data_operations->editprofile($info);
-	 json_encode($response);
-     $this->response($response, 200);
+	 if($response!=null) 
+           {
+		     $response=array('success'=>'true') ; 
+		   }
+		  else
+			{
+			$response=array('success'=>'false') ; 
+			}
+		  json_encode($response);
+		  $this->response($response, 200);
   }
   
   function usercomplaints_get(){

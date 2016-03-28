@@ -23,6 +23,15 @@ class admin extends REST_Controller
 		  $this->load->model('Data_operations');
 		 
 		  $response = $this->Data_operations->resolveComp($id);
+		  if($response!=null) 
+           {
+		     $response=array('success'=>'true') ; 
+		   }
+		  else
+			{
+			$response=array('success'=>'false') ; 
+			}
+		  json_encode($response);
 		  $this->response($response, 200);
    }
    function unresolveC_get()
@@ -42,7 +51,17 @@ class admin extends REST_Controller
 	  $this->load->model('Data_operations');
 	 
 	  $response = $this->Data_operations->unresolveComp($id);
-	  $this->response($response, 200);
+	  if($response!=null) 
+           {
+		     $response=array('success'=>'true') ; 
+		   }
+		  else
+			{
+			$response=array('success'=>'false') ; 
+			}
+		  json_encode($response);
+		  $this->response($response, 200);
+	  
    }
    function admincomplaint_get()
    {

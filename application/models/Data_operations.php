@@ -221,7 +221,7 @@ class Data_operations extends CI_Model {
      $password = rawurldecode($password);
 
      $this->db->from('users');
-     $this->db->where('name=',$username);
+     $this->db->where('kerberos_username=',$username);
      $this->db->where('password=',$password);
      $query = $this->db->get();
 	 $i= 0 ;
