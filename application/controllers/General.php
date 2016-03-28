@@ -18,9 +18,16 @@ class General extends REST_Controller
 
     $this->load->model('Data_operations');
     $data = $this->Data_operations->register($profile);
-    $response = array('user'=>$data,'success'=>'true');
-    $this->session->set_userdata($response);
-    json_encode($response);
+	if($data['success']=="true")
+    {$response = $data ;
+     //$this->session->set_userdata($data['user']);
+	}
+	else
+	{
+	 $response = $data;
+	}
+	
+    //json_encode($response);
     $this->response($response, 200);
   }
 

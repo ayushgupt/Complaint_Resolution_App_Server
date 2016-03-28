@@ -126,6 +126,7 @@ class Data_operations extends CI_Model {
     $time = time();
 
     $t= mdate($datestring, $time);
+	 //echo $comment[1] ;
 	//insert values into comments table of database
      $data = array(
       'id'=>$comment[0],
@@ -142,11 +143,12 @@ class Data_operations extends CI_Model {
 	);
 	$this->db->insert('notifications', $notif);
     
-    return "true" ;
+    
     //incrementing comment number 
 	$this->db->set('comments_num', 'comments_num+1', FALSE);
-	 $this->db->where('id', comment[0]);
+	 $this->db->where('id', $comment[0]);
 	 $this->db->update('complaints');
+     return "true" ;
    }
    
    public function getnotifbyid($id)
@@ -202,14 +204,26 @@ class Data_operations extends CI_Model {
 	);
 
     //insert values into users table of database
-    $this->db->insert('users', $data);
-
-    $this->db->from('users');
-    $this->db->where('name=',$profile[0]);
-    $this->db->where('password=',$profile[1]);
-    $query = $this->db->get();
+	$db_debug = $this->db->db_debug;
+   $this->db->db_debug = false;
 	
-	return $query->result();
+    if($this->db->insert('users', $data))
+     {
+		$this->db->db_debug= $db_debug ; 
+		$this->db->from('users');
+		$this->db->where('kerberos_username=',$profile[2]);
+		$this->db->where('password=',$profile[1]);
+		$query = $this->db->get();
+	    return array('user'=>$query->result()[0],'success'=>'true') ;
+		
+	 }
+	 else
+	 {  $this->db->db_debug= $db_debug ; 
+	   return array('success'=>"false") ;
+	 }
+	
+	
+
    }
 
    function login($username,$password){
