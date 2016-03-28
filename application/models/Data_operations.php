@@ -409,7 +409,24 @@ class Data_operations extends CI_Model {
      $query = $this->db->get('complaints');
      
 	 return $query->result();
-   } 
+   }
+	
+	function editadmin($info)
+	{
+	  $this->load->database();
+	  
+	   foreach ( $info as &$val ){
+  			$val = rawurldecode($val) ;
+  		}
+     $data = array('name'=>$info['username'],
+	 'password' => $info['password']
+	 );
+	 
+	 $this->db->where('name=',$info['username']);
+     $query = $this->db->update('admin',$data);
+     return $query;
+	  
+	}
    
 
 }

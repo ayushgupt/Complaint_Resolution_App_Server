@@ -101,4 +101,15 @@ class admin extends REST_Controller
     json_encode($response);
     $this->response($response, 200);
   }
+  function adminedit_get()
+  {
+	$username = $this->get('username');
+    $password = $this->get('password');
+	$info= array('username'=>$username,
+	 'password'=>$password
+	);
+	$this->load->model('Data_operations');
+    $response = $this->Data_operations->editadmin($info);
+	
+  }
 }
