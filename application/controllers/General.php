@@ -34,9 +34,10 @@ class General extends REST_Controller
 
 	 
     $this->load->model('Data_operations');
-    $data = $this->Data_operations->login($username,$password);
+    $response = $this->Data_operations->login($username,$password);
     
-     $response= $data; 
+     $data= $response['user']; 
+	 
 	$this->session->set_userdata($data);
     json_encode($response);
     $this->response($response, 200);

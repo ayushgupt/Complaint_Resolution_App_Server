@@ -233,13 +233,19 @@ class Data_operations extends CI_Model {
 			  'email'=>$row->email,
 			  'phone'=>$row->phone,
 			  'password'=>$row->password,
-			  'success'=>'true'
+			  
 			);
 			$i=$i+1 ;
 		 }
-	
+	    echo $i ;
 		if($i==1)	
-		return $data ;
+		{  $data2=  array(
+			   'user'=> $data, 
+			   'success' => 'true'
+			);
+		  return $data2 ;
+		
+		}
 		else
 		{
 		  $data = array(
