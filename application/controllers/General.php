@@ -20,7 +20,7 @@ class General extends REST_Controller
     $data = $this->Data_operations->register($profile);
 	if($data['success']=="true")
     {$response = $data ;
-     //$this->session->set_userdata($data['user']);
+     $this->session->set_userdata($data['user']);
 	}
 	else
 	{
@@ -31,7 +31,7 @@ class General extends REST_Controller
     $this->response($response, 200);
   }
 
-  function login_POST()
+  function login_get()
   {
     // For debugging purposes
     //$this->output->enable_profiler(TRUE);

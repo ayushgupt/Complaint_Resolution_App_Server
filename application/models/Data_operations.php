@@ -214,7 +214,21 @@ class Data_operations extends CI_Model {
 		$this->db->where('kerberos_username=',$profile[2]);
 		$this->db->where('password=',$profile[1]);
 		$query = $this->db->get();
-	    return array('user'=>$query->result()[0],'success'=>'true') ;
+		 $i= 0 ;
+		foreach($query->result() as  $row) 
+         {  $data = array(
+			  'name'=>$row->name,
+			  'kerberos_username'=>$row->kerberos_username,
+			  'hostel'=>$row->hostel,
+			  'email'=>$row->email,
+			  'phone'=>$row->phone,
+			  'password'=>$row->password,
+			  
+			);
+			$i=$i+1 ;
+		 }
+		
+	    return array('user'=>$data,'success'=>'true') ;
 		
 	 }
 	 else
@@ -251,7 +265,7 @@ class Data_operations extends CI_Model {
 			);
 			$i=$i+1 ;
 		 }
-	    echo $i ;
+	    //echo $i ;
 		if($i==1)	
 		{  $data2=  array(
 			   'user'=> $data, 
