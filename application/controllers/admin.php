@@ -83,4 +83,22 @@ class admin extends REST_Controller
       json_encode($response);
       $this->response($response, 200);	  
    }
+  function adminlogin_get()
+  {
+    // For debugging purposes
+    //$this->output->enable_profiler(TRUE);
+
+    $username = $this->get('username');
+    $password = $this->get('password');
+
+	 
+    $this->load->model('Data_operations');
+    $response = $this->Data_operations->adminlogin($username,$password);
+    
+     $data= $response['user']; 
+	 
+	$this->session->set_userdata($data);
+    json_encode($response);
+    $this->response($response, 200);
+  }
 }

@@ -7,6 +7,25 @@ class Data_operations extends CI_Model {
      parent::__construct() ;
    }
 
+   function getcommentlist($id)
+   {
+      $this->load->database();
+      $this->db->distinct();
+	  $this->db->where('id=',$id);
+      $query = $this->db->get('comments');
+	  
+	  return $query->result() ;
+   
+   }
+   function getindicomplaint($id)
+   {
+      $this->load->database();
+      $this->db->distinct();
+	  $this->db->where('id=',$id);
+      $query = $this->db->get('complaints');
+	  
+	  return $query->result()[0] ;
+   }
    function unresolveComp($id)
    {
      $this->load->database();
@@ -284,7 +303,47 @@ class Data_operations extends CI_Model {
 	 
      
    }
+   
+   function adminlogin($username,$password){
+     $this->load->database();
+     $this->db->distinct();
 
+     //decode all elements of array
+     $username = rawurldecode($username);
+     $password = rawurldecode($password);
+
+     $this->db->from('admin');
+     $this->db->where('name=',$username);
+     $this->db->where('password=',$password);
+     $query = $this->db->get();
+	 $i= 0 ;
+	 foreach($query->result() as  $row) 
+         {  $data = array(
+			  'kerberos_username'=>$row->name,
+			  'password'=>$row->password,
+			  'type'=>$row->type
+			);
+			$i=$i+1 ;
+		 }
+	    //echo $i ;
+		if($i==1)	
+		{  $data2=  array(
+			   'user'=> $data, 
+			   'success' => 'true'
+			);
+		  return $data2 ;
+		
+		}
+		else
+		{
+		  $data = array(
+			   'success'=>'false'
+			);
+			return $data ;
+		}
+	 
+     
+   }
    function getnotifs($limit,$offset){
      $this->load->database();
 

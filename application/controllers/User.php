@@ -150,6 +150,43 @@ class User extends REST_Controller
     json_encode($response);
     $this->response($response, 200);
   }
-
-
+  
+  function indicomplaint_get()
+  {
+       if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}	
+		
+	  	$id=$this->get('id'); 	
+		 $this->load->model('Data_operations');
+		$response = $this->Data_operations->getindicomplaint($id);
+		json_encode($response);
+		$this->response($response, 200);
+  }
+  function commentlist_get()
+  {
+      if($this->session->userdata('kerberos_username')!=null)
+			{ 
+			   
+			}
+			else
+			{ 
+				$response=array('success'=>'false') ; 
+				json_encode($response);
+				$this->response($response, 201);
+			}	
+		
+	  	$id=$this->get('id'); 	
+		 $this->load->model('Data_operations');
+		$response = $this->Data_operations->getcommentlist($id);
+		json_encode($response);
+		$this->response($response, 200);
+  }
 }
