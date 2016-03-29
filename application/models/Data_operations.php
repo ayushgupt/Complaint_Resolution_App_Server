@@ -13,9 +13,9 @@ class Data_operations extends CI_Model {
       $this->db->distinct();
 	  $this->db->where('id=',$id);
       $query = $this->db->get('comments');
-	  
+
 	  return $query->result() ;
-   
+
    }
    function getindicomplaint($id)
    {
@@ -23,7 +23,7 @@ class Data_operations extends CI_Model {
       $this->db->distinct();
 	  $this->db->where('id=',$id);
       $query = $this->db->get('complaints');
-	  
+
 	  return $query->result()[0] ;
    }
    function unresolveComp($id)
@@ -35,12 +35,12 @@ class Data_operations extends CI_Model {
 	 $datestring = "%Y-%m-%d %h:%i:%s";
      $time = time();
      $t= mdate($datestring, $time);
-   
-     //updating resolve	 
+
+     //updating resolve
      $this->db->set('resolved', 'resolved-1', FALSE);
 	 $this->db->where('id', $id);
 	 $this->db->update('complaints');
-	 
+
    	return true ;
    }
    function resolveComp($id)
@@ -52,21 +52,21 @@ class Data_operations extends CI_Model {
 	 $datestring = "%Y-%m-%d %h:%i:%s";
      $time = time();
      $t= mdate($datestring, $time);
-   
-     //updating resolve	 
+
+     //updating resolve
      $this->db->set('resolved', 'resolved+1', FALSE);
 	 $this->db->where('id', $id);
 	 $this->db->update('complaints');
-	 
+
 	 //adding notifications
 	 $indi_notif=$this->getnotifbyid($id);
 	 $notif=array(
 	 'description'=> $indi_notif['title'][0].' is resolved',
 	 'datetime_created'=> $t
 	 );
-	 $this->db->insert('notifications',$notif); 
+	 $this->db->insert('notifications',$notif);
    	return true ;
-	 
+
    }
    function addupvote($id)
    {
@@ -77,19 +77,19 @@ class Data_operations extends CI_Model {
 	 $datestring = "%Y-%m-%d %h:%i:%s";
      $time = time();
      $t= mdate($datestring, $time);
-	 
-     //updating upvote	 
+
+     //updating upvote
      $this->db->set('upvotes_num', 'upvotes_num+1', FALSE);
 	 $this->db->where('id', $id);
 	 $this->db->update('complaints');
-	 
+
 	 //adding notifications
 	 $indi_notif=$this->getnotifbyid($id);
 	 $notif=array(
 	 'description'=> 'Upvote on '.$indi_notif['title'][0],
 	 'datetime_created'=> $t
 	 );
-	 $this->db->insert('notifications',$notif); 
+	 $this->db->insert('notifications',$notif);
    	return true ;
    }
    function complaint_to_db($newcomplaint)
@@ -106,7 +106,7 @@ class Data_operations extends CI_Model {
 	 $datestring = "%Y-%m-%d %h:%i:%s";
      $time = time();
      $t= mdate($datestring, $time);
-     
+
      $data=array(
 	 'title'=>$newcomplaint[0],
 	 'description'=>$newcomplaint[1],
@@ -114,22 +114,22 @@ class Data_operations extends CI_Model {
 	  'postedby'=>$newcomplaint[3],
 	  'admin'=>$newcomplaint[4],
 	  'datetime_created'=>$t,
-	  'datetime_last'=>$t, 
+	  'datetime_last'=>$t,
 	  'upvotes_num'=>0,
 	  'comments_num'=>0 ,
-	  'resolved'=>0 
+	  'resolved'=>0
 	 );
-	 
+
 	 //inserting new complaint into table
 	 $this->db->insert('complaints', $data);
-	 
+
 	 $notif=array(
 	 'description'=> $newcomplaint[3].' posted a new complaint',
 	 'datetime_created'=> $t
 	 );
 	 //inserting new notification
-	 $this->db->insert('notifications',$notif); 
-	 return true; 
+	 $this->db->insert('notifications',$notif);
+	 return true;
    }
    function commentdb($comment)
    {
@@ -161,30 +161,30 @@ class Data_operations extends CI_Model {
 	  'datetime_created'=>$t
 	);
 	$this->db->insert('notifications', $notif);
-    
-    
-    //incrementing comment number 
+
+
+    //incrementing comment number
 	$this->db->set('comments_num', 'comments_num+1', FALSE);
 	 $this->db->where('id', $comment[0]);
 	 $this->db->update('complaints');
      return "true" ;
    }
-   
+
    public function getnotifbyid($id)
    {
-    $this->load->database(); 
-    $query= $this->db->query('SELECT * FROM complaints WHERE id='.$id) ;                
+    $this->load->database();
+    $query= $this->db->query('SELECT * FROM complaints WHERE id='.$id) ;
     $i= 0 ;
-	 foreach($query->result() as  $row) 
-         {  $result['title'][$i] = $row->title ;                                         
-			$result['description'][$i]= $row->description ;        
+	 foreach($query->result() as  $row)
+         {  $result['title'][$i] = $row->title ;
+			$result['description'][$i]= $row->description ;
 			$result['type'][$i] = $row->type ;
 			$result['admin'][$i] =$row->admin ;
 			$result['datetime_created'][$i]= $row->datetime_created ;
 			$result['datetime_last'][$i]= $row->datetime_last ;
 			$i=$i+1 ;
 		 }
-		
+
 		return $result ;
    }
    function editprofile($info)
@@ -199,7 +199,7 @@ class Data_operations extends CI_Model {
 	 'phone' => $info[3],
 	 'password' => $info[4]
 	 );
-	 
+
      $this->db->where('kerberos_username=',$info[0]);
      $query = $this->db->update('users',$data);
      return $query;
@@ -225,16 +225,16 @@ class Data_operations extends CI_Model {
     //insert values into users table of database
 	$db_debug = $this->db->db_debug;
    $this->db->db_debug = false;
-	
+
     if($this->db->insert('users', $data))
      {
-		$this->db->db_debug= $db_debug ; 
+		$this->db->db_debug= $db_debug ;
 		$this->db->from('users');
 		$this->db->where('kerberos_username=',$profile[2]);
 		$this->db->where('password=',$profile[1]);
 		$query = $this->db->get();
 		 $i= 0 ;
-		foreach($query->result() as  $row) 
+		foreach($query->result() as  $row)
          {  $data = array(
 			  'name'=>$row->name,
 			  'kerberos_username'=>$row->kerberos_username,
@@ -242,20 +242,20 @@ class Data_operations extends CI_Model {
 			  'email'=>$row->email,
 			  'phone'=>$row->phone,
 			  'password'=>$row->password,
-			  
+
 			);
 			$i=$i+1 ;
 		 }
-		
+
 	    return array('user'=>$data,'success'=>'true') ;
-		
+
 	 }
 	 else
-	 {  $this->db->db_debug= $db_debug ; 
+	 {  $this->db->db_debug= $db_debug ;
 	   return array('success'=>"false") ;
 	 }
-	
-	
+
+
 
    }
 
@@ -272,7 +272,7 @@ class Data_operations extends CI_Model {
      $this->db->where('password=',$password);
      $query = $this->db->get();
 	 $i= 0 ;
-	 foreach($query->result() as  $row) 
+	 foreach($query->result() as  $row)
          {  $data = array(
 			  'name'=>$row->name,
 			  'kerberos_username'=>$row->kerberos_username,
@@ -280,18 +280,18 @@ class Data_operations extends CI_Model {
 			  'email'=>$row->email,
 			  'phone'=>$row->phone,
 			  'password'=>$row->password,
-			  
+
 			);
 			$i=$i+1 ;
 		 }
 	    //echo $i ;
-		if($i==1)	
+		if($i==1)
 		{  $data2=  array(
-			   'user'=> $data, 
+			   'user'=> $data,
 			   'success' => 'true'
 			);
 		  return $data2 ;
-		
+
 		}
 		else
 		{
@@ -300,10 +300,10 @@ class Data_operations extends CI_Model {
 			);
 			return $data ;
 		}
-	 
-     
+
+
    }
-   
+
    function adminlogin($username,$password){
      $this->load->database();
      $this->db->distinct();
@@ -317,7 +317,7 @@ class Data_operations extends CI_Model {
      $this->db->where('password=',$password);
      $query = $this->db->get();
 	 $i= 0 ;
-	 foreach($query->result() as  $row) 
+	 foreach($query->result() as  $row)
          {  $data = array(
 			  'kerberos_username'=>$row->name,
 			  'password'=>$row->password,
@@ -326,13 +326,13 @@ class Data_operations extends CI_Model {
 			$i=$i+1 ;
 		 }
 	    //echo $i ;
-		if($i==1)	
+		if($i==1)
 		{  $data2=  array(
-			   'user'=> $data, 
+			   'user'=> $data,
 			   'success' => 'true'
 			);
 		  return $data2 ;
-		
+
 		}
 		else
 		{
@@ -341,8 +341,8 @@ class Data_operations extends CI_Model {
 			);
 			return $data ;
 		}
-	 
-     
+
+
    }
    function getnotifs($limit,$offset){
      $this->load->database();
@@ -371,7 +371,12 @@ class Data_operations extends CI_Model {
        $query = $this->db->get('complaints',$limit,$offset);
      }
      elseif($type[0]=='1') {
-       $this->db->where('type=',$type);  // this compares type as well as hostel
+       $admin = $complaintsdata[4]."_warden";
+       $resolved = $complaintsdata[5];
+       $this->db->where('type=',$type);
+       $this->db->where('admin=',$admin);
+       $this->db->where('resolved=',$resolved);
+
        $offset = $complaintsdata[2];
        $limit = $complaintsdata[3]-$complaintsdata[2]+1;
        $query = $this->db->get('complaints',$limit,$offset);
@@ -395,38 +400,40 @@ class Data_operations extends CI_Model {
      }
 
      $username = $complaintsdata[0];
+     $resolved = $complaintsdata[3];
      $this->db->where('postedby=',$username);
+     $this->db->where('resolved=',$resolved);
      $offset = $complaintsdata[1];
      $limit = $complaintsdata[2]-$complaintsdata[1]+1;
      $query = $this->db->get('complaints',$limit,$offset);
      return $query->result();
    }
-   
+
    function getadmincomplaints($type){
      $this->load->database();
-	 
+
      $this->db->where('admin=',$type);
      $query = $this->db->get('complaints');
-     
+
 	 return $query->result();
    }
-	
+
 	function editadmin($info)
 	{
 	  $this->load->database();
-	  
+
 	   foreach ( $info as &$val ){
   			$val = rawurldecode($val) ;
   		}
      $data = array('name'=>$info['username'],
 	 'password' => $info['password']
 	 );
-	 
+
 	 $this->db->where('name=',$info['username']);
      $query = $this->db->update('admin',$data);
      return $query;
-	  
+
 	}
-   
+
 
 }

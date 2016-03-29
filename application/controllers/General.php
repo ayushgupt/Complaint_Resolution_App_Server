@@ -26,7 +26,7 @@ class General extends REST_Controller
 	{
 	 $response = $data;
 	}
-	
+
     //json_encode($response);
     $this->response($response, 200);
   }
@@ -39,21 +39,21 @@ class General extends REST_Controller
     $username = $this->get('username');
     $password = $this->get('password');
 
-	 
+
     $this->load->model('Data_operations');
     $response = $this->Data_operations->login($username,$password);
-    
-     $data= $response['user']; 
-	 
+
+     $data= $response['user'];
+
 	$this->session->set_userdata($data);
     json_encode($response);
     $this->response($response, 200);
   }
 
   function logout_get(){
-    
+
 	$this->session->sess_destroy();
-        $response=array('success'=>'true') ; 
+        $response=array('success'=>'true') ;
 		json_encode($response);
 		$this->response($response, 201);
   }
@@ -62,21 +62,23 @@ class General extends REST_Controller
     $startindex = $this->get('startindex');
     $endindex = $this->get('endindex');
 
+    /*
 	 if($this->session->userdata('kerberos_username')!=null)
-	{ 
-	   
+	{
+
 	}
     else
-	{ 
-	    $response=array('success'=>'false') ; 
+	{
+	    $response=array('success'=>'false') ;
 		json_encode($response);
 		$this->response($response, 201);
-	}	
+	}
+  */
     $limit = $endindex - $startindex +1;
     $offset = $startindex;
 
     $this->load->model('Data_operations');
-    $response = $this->Data_operations->getnotifs($limit,$offset);
+    $response = array("notifications" => $this->Data_operations->getnotifs($limit,$offset));
     json_encode($response);
     $this->response($response, 200);
   }
