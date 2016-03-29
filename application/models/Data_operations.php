@@ -363,16 +363,17 @@ class Data_operations extends CI_Model {
      }
 
      $type = $complaintsdata[1];
+     $resolved = $complaintsdata[5];
      if($type[0]=='0'){
        $this->db->where('postedby=',$complaintsdata[0]);
        $this->db->where('type=',$type);
+       $this->db->where('resolved=',$resolved);
        $offset = $complaintsdata[2];
        $limit = $complaintsdata[3]-$complaintsdata[2]+1;
        $query = $this->db->get('complaints',$limit,$offset);
      }
      elseif($type[0]=='1') {
        $admin = $complaintsdata[4]."_warden";
-       $resolved = $complaintsdata[5];
        $this->db->where('type=',$type);
        $this->db->where('admin=',$admin);
        $this->db->where('resolved=',$resolved);
@@ -383,6 +384,7 @@ class Data_operations extends CI_Model {
      }
      else {
        $this->db->where('type=',$type);
+       $this->db->where('resolved=',$resolved);
        $offset = $complaintsdata[2];
        $limit = $complaintsdata[3]-$complaintsdata[2]+1;
        $query = $this->db->get('complaints',$limit,$offset);

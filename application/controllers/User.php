@@ -9,6 +9,7 @@ class User extends REST_Controller
 
   function addcomplaint_get()
 	{
+    /*
 	    if($this->session->userdata('kerberos_username')!=null)
 			{
 
@@ -19,12 +20,13 @@ class User extends REST_Controller
 				json_encode($response);
 				$this->response($response, 201);
 			}
+      */
 	   $complaint[0]=$this->get('title');
 	   $complaint[1]=$this->get('description');
 	   $complaint[2]=$this->get('type');
-       $complaint[3]=$this->get('postedby');
+     $complaint[3]=$this->get('postedby');
 	   $complaint[4]=$this->get('admin');
-		$this->load->model('Data_operations');
+		 $this->load->model('Data_operations');
 
 		$response = $this->Data_operations->complaint_to_db($complaint);
 		$this->response($response, 200);
@@ -113,7 +115,7 @@ class User extends REST_Controller
 				$this->response($response, 201);
 			}
       */
-    $info[0] = $this->get('kerberos_username');
+    $info[0] = $this->get('username');
 	  $info[1] = $this->get('hostel');
 	  $info[2] = $this->get('email');
     $info[3] = $this->get('phone');
@@ -152,7 +154,7 @@ class User extends REST_Controller
     $complaintsdata[3] = $this->get('resolved');
 
     $this->load->model('Data_operations');
-    $response = $this->Data_operations->getusercomplaints($complaintsdata);
+    $response = array("complaints"=>$this->Data_operations->getusercomplaints($complaintsdata));
     json_encode($response);
     $this->response($response, 200);
   }
@@ -171,13 +173,17 @@ class User extends REST_Controller
 				$this->response($response, 201);
 			}
       */
-	  	$id=$this->get('id');
+	   $id=$this->get('id');
 		 $this->load->model('Data_operations');
-		$response = $this->Data_operations->getindicomplaint($id);
-		json_encode($response);
-		$this->response($response, 200);
+     $response2 = $this->commentlist($id);
+		 $response = $this->Data_operations->getindicomplaint($id);
+
+    $finalresponse = array("complaint"=>$response,"comments"=>$response2);
+		json_encode($finalresponse);
+		$this->response($finalresponse, 200);
   }
-  function commentlist_get()
+
+  function commentlist($id)
   {
       /*
       if($this->session->userdata('kerberos_username')!=null)
@@ -191,10 +197,9 @@ class User extends REST_Controller
 				$this->response($response, 201);
 			}
       */
-	  	$id=$this->get('id');
+	  	//$id=$this->get('id');
 		 $this->load->model('Data_operations');
 		$response = $this->Data_operations->getcommentlist($id);
-		json_encode($response);
-		$this->response($response, 200);
+		return $response;
   }
 }
