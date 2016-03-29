@@ -7,6 +7,10 @@ require APPPATH.'/libraries/REST_Controller.php';
 class admin extends REST_Controller
 {
 	
+	function superadminlogin_get()
+	{
+		$this->load->view('index');
+	}
    function resolveC_get()
    {
        if($this->session->userdata('kerberos_username')!=null)

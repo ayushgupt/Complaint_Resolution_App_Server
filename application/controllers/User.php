@@ -153,7 +153,7 @@ class User extends REST_Controller
   
   function indicomplaint_get()
   {
-       if($this->session->userdata('kerberos_username')!=null)
+      /* if($this->session->userdata('kerberos_username')!=null)
 			{ 
 			   
 			}
@@ -163,16 +163,21 @@ class User extends REST_Controller
 				json_encode($response);
 				$this->response($response, 201);
 			}	
-		
+		*/
 	  	$id=$this->get('id'); 	
 		 $this->load->model('Data_operations');
+		
+		$response2=$this->commentlist($id) ;
+		
 		$response = $this->Data_operations->getindicomplaint($id);
-		json_encode($response);
-		$this->response($response, 200);
+		
+		$finalresponse= array('complaint'=>$response, 'comments'=>$response2);
+		json_encode($finalresponse);
+		$this->response($finalresponse, 200);
   }
-  function commentlist_get()
+  function commentlist($id)
   {
-      if($this->session->userdata('kerberos_username')!=null)
+     /* if($this->session->userdata('kerberos_username')!=null)
 			{ 
 			   
 			}
@@ -182,11 +187,10 @@ class User extends REST_Controller
 				json_encode($response);
 				$this->response($response, 201);
 			}	
-		
-	  	$id=$this->get('id'); 	
+		*/
+	  	 	
 		 $this->load->model('Data_operations');
 		$response = $this->Data_operations->getcommentlist($id);
-		json_encode($response);
-		$this->response($response, 200);
+		return $response ;
   }
 }
