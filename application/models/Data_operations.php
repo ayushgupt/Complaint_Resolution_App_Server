@@ -373,7 +373,7 @@ class Data_operations extends CI_Model {
        $query = $this->db->get('complaints',$limit,$offset);
      }
      elseif($type[0]=='1') {
-       $admin = $complaintsdata[4]."_warden";
+       $admin = $complaintsdata[4]."_admin";
        $this->db->where('type=',$type);
        $this->db->where('admin=',$admin);
        $this->db->where('resolved=',$resolved);
@@ -411,10 +411,12 @@ class Data_operations extends CI_Model {
      return $query->result();
    }
 
-   function getadmincomplaints($type){
+   function getadmincomplaints($type,$resolved){
      $this->load->database();
-
+	 $this->db->distinct();
+	  //echo $type ;
      $this->db->where('admin=',$type);
+	 $this->db->where('resolved=',$resolved);
      $query = $this->db->get('complaints');
 
 	 return $query->result();

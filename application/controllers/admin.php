@@ -13,7 +13,7 @@ class admin extends REST_Controller
 	}
    function resolveC_get()
    {
-       if($this->session->userdata('kerberos_username')!=null)
+       /*if($this->session->userdata('kerberos_username')!=null)
 			{ 
 			   
 			}
@@ -23,7 +23,8 @@ class admin extends REST_Controller
 				json_encode($response);
 				$this->response($response, 201);
 			}
-		   $id=$this->get('id'); 
+*/		 
+		 $id=$this->get('id'); 
 		  $this->load->model('Data_operations');
 		 
 		  $response = $this->Data_operations->resolveComp($id);
@@ -40,7 +41,7 @@ class admin extends REST_Controller
    }
    function unresolveC_get()
    {    
-		   if($this->session->userdata('kerberos_username')!=null)
+		/*   if($this->session->userdata('kerberos_username')!=null)
 			{ 
 			   
 			}
@@ -50,7 +51,7 @@ class admin extends REST_Controller
 				json_encode($response);
 				$this->response($response, 201);
 			}
-
+*/
       $id=$this->get('id'); 
 	  $this->load->model('Data_operations');
 	 
@@ -70,7 +71,7 @@ class admin extends REST_Controller
    function admincomplaint_get()
    {
       
-	   if($this->session->userdata('kerberos_username')!=null)
+	  /* if($this->session->userdata('kerberos_username')!=null)
 		{ 
 		   
 		}
@@ -80,12 +81,14 @@ class admin extends REST_Controller
 			json_encode($response);
 			$this->response($response, 201);
 		}
-      $type=$this->get('admin');   
-      
+      */
+	  $type=$this->get('admin');   
+	  $resolved= $this->get('resolved'); 	
       $this->load->model('Data_operations');
-      $response = $this->Data_operations->getadmincomplaints($type);
-      json_encode($response);
-      $this->response($response, 200);	  
+      $response = $this->Data_operations->getadmincomplaints($type,$resolved);
+      $response2= array('complaints'=>$response,'success'=>'true'); 
+	  json_encode($response2);
+      $this->response($response2, 200);	  
    }
   function adminlogin_get()
   {
@@ -99,7 +102,7 @@ class admin extends REST_Controller
     $this->load->model('Data_operations');
     $response = $this->Data_operations->adminlogin($username,$password);
     
-     $data= $response['user']; 
+     $data= $response; 
 	 
 	$this->session->set_userdata($data);
     json_encode($response);
@@ -114,6 +117,7 @@ class admin extends REST_Controller
 	);
 	$this->load->model('Data_operations');
     $response = $this->Data_operations->editadmin($info);
-	
+	$response=array('success'=>'true') ; 
+	    $this->response($response, 200);
   }
 }

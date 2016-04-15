@@ -11,7 +11,7 @@ class General extends REST_Controller
   {
     $profile[0] = $this->get('username');
     $profile[1] = $this->get('password');
-    $profile[2] = $this->get('kerberos_username');
+    $profile[2] = $this->get('kerberos');
     $profile[3] = $this->get('phone');
     $profile[4] = $this->get('email');
     $profile[5] = $this->get('hostel');
@@ -20,7 +20,7 @@ class General extends REST_Controller
     $data = $this->Data_operations->register($profile);
 	if($data['success']=="true")
     {$response = $data ;
-     $this->session->set_userdata($data['user']);
+     //$this->session->set_userdata($data['user']);
 	}
 	else
 	{
